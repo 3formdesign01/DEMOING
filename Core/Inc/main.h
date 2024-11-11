@@ -73,6 +73,10 @@ void Error_Handler(void);
 #define DSI_BL_CTRL_GPIO_Port GPIOI
 #define RENDER_TIME_Pin GPIO_PIN_0
 #define RENDER_TIME_GPIO_Port GPIOD
+#define LCDRST_Pin GPIO_PIN_7
+#define LCDRST_GPIO_Port GPIOG
+#define LCDSTBY_Pin GPIO_PIN_8
+#define LCDSTBY_GPIO_Port GPIOG
 #define USER_BUTTON_Pin GPIO_PIN_13
 #define USER_BUTTON_GPIO_Port GPIOC
 #define OSPI_CLK_Pin GPIO_PIN_10
@@ -104,6 +108,8 @@ void Error_Handler(void);
 #define OSPI_DQS_GPIO_Port GPIOA
 #define FRAME_RATE_Pin GPIO_PIN_14
 #define FRAME_RATE_GPIO_Port GPIOF
+#define LCD_EN_Pin GPIO_PIN_14
+#define LCD_EN_GPIO_Port GPIOE
 
 /* USER CODE BEGIN Private defines */
 

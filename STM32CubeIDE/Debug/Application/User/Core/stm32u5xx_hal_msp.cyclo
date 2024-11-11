@@ -15,6 +15,8 @@ C:/TouchGFXProjects/DEMOING/Core/Src/stm32u5xx_hal_msp.c:495:6:HAL_LTDC_MspInit	
 C:/TouchGFXProjects/DEMOING/Core/Src/stm32u5xx_hal_msp.c:523:6:HAL_LTDC_MspDeInit	2
 C:/TouchGFXProjects/DEMOING/Core/Src/stm32u5xx_hal_msp.c:549:6:HAL_OSPI_MspInit	3
 C:/TouchGFXProjects/DEMOING/Core/Src/stm32u5xx_hal_msp.c:646:6:HAL_OSPI_MspDeInit	2
-C:/TouchGFXProjects/DEMOING/Core/Src/stm32u5xx_hal_msp.c:690:6:HAL_TIM_Base_MspInit	2
-C:/TouchGFXProjects/DEMOING/Core/Src/stm32u5xx_hal_msp.c:707:6:HAL_TIM_MspPostInit	2
-C:/TouchGFXProjects/DEMOING/Core/Src/stm32u5xx_hal_msp.c:739:6:HAL_TIM_Base_MspDeInit	2
+C:/TouchGFXProjects/DEMOING/Core/Src/stm32u5xx_hal_msp.c:690:6:HAL_TIM_PWM_MspInit	2
+C:/TouchGFXProjects/DEMOING/Core/Src/stm32u5xx_hal_msp.c:713:6:HAL_TIM_Base_MspInit	2
+C:/TouchGFXProjects/DEMOING/Core/Src/stm32u5xx_hal_msp.c:730:6:HAL_TIM_MspPostInit	3
+C:/TouchGFXProjects/DEMOING/Core/Src/stm32u5xx_hal_msp.c:782:6:HAL_TIM_PWM_MspDeInit	2
+C:/TouchGFXProjects/DEMOING/Core/Src/stm32u5xx_hal_msp.c:804:6:HAL_TIM_Base_MspDeInit	2
