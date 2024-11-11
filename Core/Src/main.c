@@ -95,6 +95,44 @@ static void MX_DCACHE2_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+
+#define DISPLAY_WIDTH 800
+#define DISPLAY_HEIGHT 480
+uint8_t frameBuffer[DISPLAY_WIDTH * DISPLAY_HEIGHT * 3]; // Correct size for 24-bit access per pixel
+
+// Function to fill the screen with a specific color
+void FillScreenWithColor(uint8_t red, uint8_t green, uint8_t blue, uint32_t n_pixels)
+{
+    uint8_t* tempBuffer = frameBuffer; // Use a temporary pointer for iteration
+
+    while (n_pixels > 0)
+    {
+        *tempBuffer = blue;
+        tempBuffer++;
+
+        *tempBuffer = green;
+        tempBuffer++;
+
+        *tempBuffer = red;
+        tempBuffer++;
+
+        n_pixels--; // Decrement the pixel count
+    }
+}
+
+// Function to display a color for a specific duration (milliseconds)
+void DisplayColorTransition(uint8_t red, uint8_t green, uint8_t blue, uint32_t duration_ms)
+{
+    // Fill the frame buffer with the specified color
+    FillScreenWithColor(red, green, blue, DISPLAY_WIDTH * DISPLAY_HEIGHT);
+
+    // Update the LTDC display with the new frame buffer
+    HAL_LTDC_SetAddress(&hltdc, (uint32_t)frameBuffer, 0);
+
+    // Delay for the specified duration
+    HAL_Delay(duration_ms);
+}
+
 /* USER CODE END 0 */
 
 /**
@@ -103,6 +141,7 @@ static void MX_DCACHE2_Init(void);
   */
 int main(void)
 {
+
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -119,7 +158,7 @@ int main(void)
   /* Configure the system clock */
   SystemClock_Config();
 
-/* Configure the peripherals common clocks */
+  /* Configure the peripherals common clocks */
   PeriphCommonClock_Config();
 
   /* Configure the System Power */
@@ -134,29 +173,56 @@ int main(void)
   MX_ICACHE_Init();
   MX_CRC_Init();
   MX_TIM8_Init();
-  MX_DMA2D_Init();
-  MX_GPU2D_Init();
+//  MX_DMA2D_Init();
+//  MX_GPU2D_Init();
   MX_DSIHOST_DSI_Init();
   MX_LTDC_Init();
-  MX_OCTOSPI1_Init();
-  MX_HSPI1_Init();
-  MX_DCACHE1_Init();
-  MX_DCACHE2_Init();
-  MX_TouchGFX_Init();
-  /* Call PreOsInit function */
-  MX_TouchGFX_PreOSInit();
+//  MX_OCTOSPI1_Init();
+//  MX_HSPI1_Init();
+//  MX_DCACHE1_Init();
+//  MX_DCACHE2_Init();
+//  MX_TouchGFX_Init();
+//  /* Call PreOsInit function */
+//  MX_TouchGFX_PreOSInit();
   /* USER CODE BEGIN 2 */
+
+    HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, DSI_SET_DISPLAY_ON, 0x00);
+  //        /* Start PWM Timer channel */
+          (void)HAL_TIM_PWM_Start(&htim8, TIM_CHANNEL_2);
+          /* Enable Backlight by setting Brightness to 100% */
+          __HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_2, 2U * 100);
+
+//          		HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+//
+//          		Test_I2C_Addresses(&hi2c3);
+
+  //        	    HAL_GPIO_WritePin(LCDSTBY_GPIO_Port, LCDSTBY_Pin, GPIO_PIN_SET);
+  //        	    HAL_Delay(1000); // Delay for 20 milliseconds
+  //        	    HAL_GPIO_WritePin(LCDRST_GPIO_Port, LCDRST_Pin, GPIO_PIN_RESET);
+  //        	    // Set LCDRST low to reset the LCD
+  //        	    HAL_Delay(1000); // Delay for 20 milliseconds
+  //        	    HAL_GPIO_WritePin(LCDRST_GPIO_Port, LCDRST_Pin, GPIO_PIN_SET);
+
+          		while(1)
+          		{
+          			DisplayColorTransition(255,0,0,500);
+          			DisplayColorTransition(0,255,0,500);
+          			DisplayColorTransition(0,0,255,500);
+          		}
 
   /* USER CODE END 2 */
 
   /* Init scheduler */
-  osKernelInitialize();  /* Call init function for freertos objects (in freertos.c) */
+  osKernelInitialize();
+
+  /* Call init function for freertos objects (in cmsis_os2.c) */
   MX_FREERTOS_Init();
 
   /* Start scheduler */
   osKernelStart();
 
   /* We should never get here as control is now taken by the scheduler */
+
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
@@ -354,6 +420,8 @@ static void MX_DCACHE2_Init(void)
   {
     Error_Handler();
   }
+   __HAL_RCC_SYSCFG_CLK_ENABLE();
+   HAL_SYSCFG_DisableSRAMCached();
   /* USER CODE BEGIN DCACHE2_Init 2 */
   HAL_DCACHE_Enable(&hdcache2);
   HAL_DCACHE_Invalidate(&hdcache2);
@@ -932,7 +1000,7 @@ static void MX_OCTOSPI1_Init(void)
   HAL_GPIO_EnableHighSPeedLowVoltage(OSPI_D5_GPIO_Port, OSPI_D5_Pin);
   HAL_GPIO_EnableHighSPeedLowVoltage(OSPI_D6_GPIO_Port, OSPI_D6_Pin);
   HAL_GPIO_EnableHighSPeedLowVoltage(OSPI_D7_GPIO_Port, OSPI_D7_Pin);
-   
+
    // Copy OSPI config to XSPI structure, since that is wexpected by the flash driver:
 
    xospi1.Instance = hospi1.Instance;

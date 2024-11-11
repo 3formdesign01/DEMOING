@@ -1,3 +1,4 @@
+
 /* USER CODE BEGIN Header */
 /**
   ******************************************************************************
@@ -20,7 +21,6 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
-
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
@@ -65,6 +65,7 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
   */
 void HAL_MspInit(void)
 {
+
   /* USER CODE BEGIN MspInit 0 */
 
   /* USER CODE END MspInit 0 */
@@ -98,6 +99,7 @@ void HAL_CRC_MspInit(CRC_HandleTypeDef* hcrc)
   /* USER CODE BEGIN CRC_MspInit 1 */
 
   /* USER CODE END CRC_MspInit 1 */
+
   }
 
 }
@@ -211,6 +213,7 @@ void HAL_DMA2D_MspInit(DMA2D_HandleTypeDef* hdma2d)
   /* USER CODE BEGIN DMA2D_MspInit 1 */
 
   /* USER CODE END DMA2D_MspInit 1 */
+
   }
 
 }
@@ -258,6 +261,7 @@ void HAL_DSI_MspInit(DSI_HandleTypeDef* hdsi)
   /* USER CODE BEGIN DSI_MspInit 1 */
 
   /* USER CODE END DSI_MspInit 1 */
+
   }
 
 }
@@ -309,6 +313,7 @@ void HAL_GPU2D_MspInit(GPU2D_HandleTypeDef* hgpu2d)
     __HAL_RCC_SYSCFG_CLK_ENABLE();
     SYSCFG->CFGR1 &= ~(1L << 28);
   /* USER CODE END GPU2D_MspInit 1 */
+
   }
 
 }
@@ -422,6 +427,7 @@ void HAL_XSPI_MspInit(XSPI_HandleTypeDef* hxspi)
   /* USER CODE BEGIN HSPI1_MspInit 1 */
 #endif
   /* USER CODE END HSPI1_MspInit 1 */
+
   }
 
 }
@@ -503,6 +509,7 @@ void HAL_LTDC_MspInit(LTDC_HandleTypeDef* hltdc)
   /* USER CODE BEGIN LTDC_MspInit 1 */
 
   /* USER CODE END LTDC_MspInit 1 */
+
   }
 
 }
@@ -625,6 +632,7 @@ void HAL_OSPI_MspInit(OSPI_HandleTypeDef* hospi)
   /* USER CODE BEGIN OCTOSPI1_MspInit 1 */
 
   /* USER CODE END OCTOSPI1_MspInit 1 */
+
   }
 
 }
@@ -691,6 +699,7 @@ void HAL_TIM_Base_MspInit(TIM_HandleTypeDef* htim_base)
   /* USER CODE BEGIN TIM8_MspInit 1 */
 
   /* USER CODE END TIM8_MspInit 1 */
+
   }
 
 }
