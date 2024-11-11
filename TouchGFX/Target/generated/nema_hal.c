@@ -42,7 +42,7 @@
 
 #define RING_SIZE                      1024 /* Ring Buffer Size in byte */
 #define NEMAGFX_MEM_POOL_SIZE          11008 /* NemaGFX byte pool size in byte */
-#define NEMAGFX_STENCIL_POOL_SIZE      235520 /* NemaGFX stencil buffer pool size in byte */
+#define NEMAGFX_STENCIL_POOL_SIZE      389120 /* NemaGFX stencil buffer pool size in byte */
 
 LOCATION_PRAGMA_NOLOAD("Nemagfx_Memory_Pool_Buffer")
 static uint8_t nemagfx_pool_mem[NEMAGFX_MEM_POOL_SIZE]; /* NemaGFX memory pool */

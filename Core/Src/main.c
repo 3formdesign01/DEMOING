@@ -134,7 +134,140 @@ void DisplayColorTransition(uint8_t red, uint8_t green, uint8_t blue, uint32_t d
     // Delay for the specified duration
     HAL_Delay(duration_ms);
 }
+void LCD_Init(void) {
 
+    // Step 1: Set STBYB low to keep the display in standby mode initially
+    HAL_GPIO_WritePin(LCDSTBY_GPIO_Port, LCDSTBY_Pin, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(LCDRST_GPIO_Port, LCDRST_Pin, GPIO_PIN_RESET);
+
+    HAL_Delay(1000); // Delay for at least 10 milliseconds as per specification
+
+    // Step 1: Set STBYB low to keep the display in standby mode initially
+    HAL_GPIO_WritePin(LCDSTBY_GPIO_Port, LCDSTBY_Pin, GPIO_PIN_SET);
+    HAL_GPIO_WritePin(LCDRST_GPIO_Port, LCDRST_Pin, GPIO_PIN_SET);
+    HAL_Delay(10); // Delay for at least 10 milliseconds as per specification
+
+
+    // Step 5: Enable the LCD by setting LCD_EN high (if applicable in your setup)
+    HAL_GPIO_WritePin(LCD_EN_GPIO_Port, LCD_EN_Pin, GPIO_PIN_SET);
+    HAL_Delay(10); // Additional delay to stabilize after enabling
+
+    // Step 6: Proceed with ICN6211-specific initialization commands
+    ICN6211_Init(); // Initialize the ICN6211 driver with proper commands
+
+
+}
+
+void ICN6211_Init(void) {
+    HAL_StatusTypeDef status;
+
+    // Send the initialization sequence with error checking
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x7A, 0xC1);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x20, 0xE0);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x21, 0x20);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x22, 0x31);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x23, 0x30);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x24, 0x08);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x25, 0x30);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x26, 0x00);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x27, 0x08);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x28, 0x04);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x29, 0x08);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x34, 0x80);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x36, 0x30);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x86, 0x29);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0xB5, 0xA0);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x5C, 0xFF);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x2A, 0x01);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x56, 0x92);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x6B, 0x71);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x69, 0x17);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x10, 0x40);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x11, 0x88);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0xB6, 0x20);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x51, 0x20);
+    if (status != HAL_OK) return;
+
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x09, 0x10);
+    if (status != HAL_OK) return;
+
+    // Enter BIST mode
+    // Set the BIST_POL register to enable BIST mode and set HSYNC/VSYNC polarity
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x2A, (0x1 << 4) | 0x0F);
+    if (status != HAL_OK) return;
+
+    // Set BIST color values (example: full red)
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x2B, 0xFF); // Full red
+    if (status != HAL_OK) return;
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x2C, 0x00); // No green
+    if (status != HAL_OK) return;
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x2D, 0x00); // No blue
+    if (status != HAL_OK) return;
+
+    // Delay for stabilization
+    HAL_Delay(100);
+
+    // Send exit sleep mode command
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P0, 0x11, 0x00);
+    if (status != HAL_OK) return;
+
+    // Delay for 100ms
+    HAL_Delay(100);
+
+    // Send display on command
+    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P0, 0x29, 0x00);
+    if (status != HAL_OK) return;
+
+    // Delay for another 100ms
+    HAL_Delay(100);
+}
+//#define DK
 /* USER CODE END 0 */
 
 /**
@@ -172,25 +305,18 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-//  MX_ICACHE_Init();
-//  MX_CRC_Init();
+  MX_ICACHE_Init();
+  MX_CRC_Init();
   MX_TIM8_Init();
-//  MX_DMA2D_Init();
-//  MX_GPU2D_Init();
-  MX_TIM3_Init();
-	HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
-//
-//          		Test_I2C_Addresses(&hi2c3);
-
-    HAL_GPIO_WritePin(LCDSTBY_GPIO_Port, LCDSTBY_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(LCDRST_GPIO_Port, LCDRST_Pin, GPIO_PIN_SET);
+  MX_DMA2D_Init();
+  MX_GPU2D_Init();
   MX_DSIHOST_DSI_Init();
   MX_LTDC_Init();
 //  MX_OCTOSPI1_Init();
 //  MX_HSPI1_Init();
 //  MX_DCACHE1_Init();
 //  MX_DCACHE2_Init();
-
+  MX_TIM3_Init();
 //  MX_TouchGFX_Init();
 //  /* Call PreOsInit function */
 //  MX_TouchGFX_PreOSInit();
@@ -204,7 +330,12 @@ int main(void)
           __HAL_TIM_SET_COMPARE(&htim8, TIM_CHANNEL_2, 2U * 100);
 
 #endif
+          HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
+          //
+          //          		Test_I2C_Addresses(&hi2c3);
 
+//              HAL_GPIO_WritePin(LCDSTBY_GPIO_Port, LCDSTBY_Pin, GPIO_PIN_SET);
+//              HAL_GPIO_WritePin(LCDRST_GPIO_Port, LCDRST_Pin, GPIO_PIN_SET);
 
   //        	    // Set LCDRST low to reset the LCD
   //        	    HAL_Delay(1000); // Delay for 20 milliseconds
@@ -312,9 +443,9 @@ void PeriphCommonClock_Config(void)
   PeriphClkInit.PLL3.PLL3Source = RCC_PLLSOURCE_HSE;
   PeriphClkInit.PLL3.PLL3M = 4;
   PeriphClkInit.PLL3.PLL3N = 125;
-  PeriphClkInit.PLL3.PLL3P = 8;
+  PeriphClkInit.PLL3.PLL3P = 15;
   PeriphClkInit.PLL3.PLL3Q = 2;
-  PeriphClkInit.PLL3.PLL3R = 24;
+  PeriphClkInit.PLL3.PLL3R = 19;
   PeriphClkInit.PLL3.PLL3RGE = RCC_PLLVCIRANGE_0;
   PeriphClkInit.PLL3.PLL3FRACN = 0;
   PeriphClkInit.PLL3.PLL3ClockOut = RCC_PLL3_DIVP|RCC_PLL3_DIVR;
@@ -501,8 +632,8 @@ static void MX_DSIHOST_DSI_Init(void)
   PLLInit.PLLIDF = DSI_PLL_IN_DIV4;
   PLLInit.PLLODF = DSI_PLL_OUT_DIV2;
   PLLInit.PLLVCORange = DSI_DPHY_VCO_FRANGE_800MHZ_1GHZ;
-  PLLInit.PLLChargePump = DSI_PLL_CHARGE_PUMP_2000HZ_4400HZ;
-  PLLInit.PLLTuning = DSI_PLL_LOOP_FILTER_2000HZ_4400HZ;
+  PLLInit.PLLChargePump = DSI_PLL_CHARGE_PUMP_4400HZ_14100HZ;
+  PLLInit.PLLTuning = DSI_PLL_LOOP_FILTER_4400HZ_30900HZ;
   if (HAL_DSI_Init(&hdsi, &PLLInit) != HAL_OK)
   {
     Error_Handler();
@@ -541,19 +672,19 @@ static void MX_DSIHOST_DSI_Init(void)
   VidCfg.ColorCoding = DSI_RGB888;
   VidCfg.LooselyPacked = DSI_LOOSELY_PACKED_DISABLE;
   VidCfg.Mode = DSI_VID_MODE_BURST;
-  VidCfg.PacketSize = 480;
+  VidCfg.PacketSize = 800;
   VidCfg.NumberOfChunks = 0;
   VidCfg.NullPacketSize = 0;
-  VidCfg.HSPolarity = DSI_HSYNC_ACTIVE_HIGH;
-  VidCfg.VSPolarity = DSI_VSYNC_ACTIVE_HIGH;
+  VidCfg.HSPolarity = DSI_HSYNC_ACTIVE_LOW;
+  VidCfg.VSPolarity = DSI_VSYNC_ACTIVE_LOW;
   VidCfg.DEPolarity = DSI_DATA_ENABLE_ACTIVE_HIGH;
   VidCfg.HorizontalSyncActive = 6;
   VidCfg.HorizontalBackPorch = 3;
   VidCfg.HorizontalLine = 1452;
-  VidCfg.VerticalSyncActive = 20;
-  VidCfg.VerticalBackPorch = 12;
-  VidCfg.VerticalFrontPorch = 200;
-  VidCfg.VerticalActive = 481;
+  VidCfg.VerticalSyncActive = 4;
+  VidCfg.VerticalBackPorch = 8;
+  VidCfg.VerticalFrontPorch = 8;
+  VidCfg.VerticalActive = 480;
   VidCfg.LPCommandEnable = DSI_LP_COMMAND_ENABLE;
   VidCfg.LPLargestPacketSize = 64;
   VidCfg.LPVACTLargestPacketSize = 0;
@@ -711,139 +842,6 @@ static void MX_ICACHE_Init(void)
   /* USER CODE END ICACHE_Init 2 */
 
 }
-void LCD_Init(void) {
-
-    // Step 1: Set STBYB low to keep the display in standby mode initially
-    HAL_GPIO_WritePin(LCDSTBY_GPIO_Port, LCDSTBY_Pin, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(LCDRST_GPIO_Port, LCDRST_Pin, GPIO_PIN_RESET);
-
-    HAL_Delay(1000); // Delay for at least 10 milliseconds as per specification
-
-    // Step 1: Set STBYB low to keep the display in standby mode initially
-    HAL_GPIO_WritePin(LCDSTBY_GPIO_Port, LCDSTBY_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(LCDRST_GPIO_Port, LCDRST_Pin, GPIO_PIN_SET);
-    HAL_Delay(10); // Delay for at least 10 milliseconds as per specification
-
-
-    // Step 5: Enable the LCD by setting LCD_EN high (if applicable in your setup)
-    HAL_GPIO_WritePin(LCD_EN_GPIO_Port, LCD_EN_Pin, GPIO_PIN_SET);
-    HAL_Delay(10); // Additional delay to stabilize after enabling
-
-    // Step 6: Proceed with ICN6211-specific initialization commands
-    ICN6211_Init(); // Initialize the ICN6211 driver with proper commands
-
-
-}
-
-void ICN6211_Init(void) {
-    HAL_StatusTypeDef status;
-
-    // Send the initialization sequence with error checking
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x7A, 0xC1);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x20, 0xE0);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x21, 0x20);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x22, 0x31);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x23, 0x30);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x24, 0x08);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x25, 0x30);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x26, 0x00);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x27, 0x08);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x28, 0x04);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x29, 0x08);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x34, 0x80);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x36, 0x30);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x86, 0x29);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0xB5, 0xA0);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x5C, 0xFF);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x2A, 0x01);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x56, 0x92);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x6B, 0x71);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x69, 0x17);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x10, 0x40);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x11, 0x88);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0xB6, 0x20);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x51, 0x20);
-    if (status != HAL_OK) return;
-
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x09, 0x10);
-    if (status != HAL_OK) return;
-
-    // Enter BIST mode
-    // Set the BIST_POL register to enable BIST mode and set HSYNC/VSYNC polarity
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x2A, (0x1 << 4) | 0x0F);
-    if (status != HAL_OK) return;
-
-    // Set BIST color values (example: full red)
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x2B, 0xFF); // Full red
-    if (status != HAL_OK) return;
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x2C, 0x00); // No green
-    if (status != HAL_OK) return;
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P1, 0x2D, 0x00); // No blue
-    if (status != HAL_OK) return;
-
-    // Delay for stabilization
-    HAL_Delay(100);
-
-    // Send exit sleep mode command
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P0, 0x11, 0x00);
-    if (status != HAL_OK) return;
-
-    // Delay for 100ms
-    HAL_Delay(100);
-
-    // Send display on command
-    status = HAL_DSI_ShortWrite(&hdsi, 0, DSI_DCS_SHORT_PKT_WRITE_P0, 0x29, 0x00);
-    if (status != HAL_OK) return;
-
-    // Delay for another 100ms
-    HAL_Delay(100);
-}
 
 /**
   * @brief LTDC Initialization Function
@@ -863,19 +861,19 @@ static void MX_LTDC_Init(void)
 
   /* USER CODE END LTDC_Init 1 */
   hltdc.Instance = LTDC;
-  hltdc.Init.HSPolarity = LTDC_HSPOLARITY_AH;
-  hltdc.Init.VSPolarity = LTDC_VSPOLARITY_AH;
+  hltdc.Init.HSPolarity = LTDC_HSPOLARITY_AL;
+  hltdc.Init.VSPolarity = LTDC_VSPOLARITY_AL;
   hltdc.Init.DEPolarity = LTDC_DEPOLARITY_AL;
   hltdc.Init.PCPolarity = LTDC_PCPOLARITY_IPC;
-  hltdc.Init.HorizontalSync = 1;
-  hltdc.Init.VerticalSync = 19;
-  hltdc.Init.AccumulatedHBP = 2;
-  hltdc.Init.AccumulatedVBP = 31;
-  hltdc.Init.AccumulatedActiveW = 482;
-  hltdc.Init.AccumulatedActiveH = 512;
-  hltdc.Init.TotalWidth = 483;
-  hltdc.Init.TotalHeigh = 712;
-  hltdc.Init.Backcolor.Blue = 0;
+  hltdc.Init.HorizontalSync = 7;
+  hltdc.Init.VerticalSync = 3;
+  hltdc.Init.AccumulatedHBP = 55;
+  hltdc.Init.AccumulatedVBP = 11;
+  hltdc.Init.AccumulatedActiveW = 855;
+  hltdc.Init.AccumulatedActiveH = 491;
+  hltdc.Init.TotalWidth = 903;
+  hltdc.Init.TotalHeigh = 499;
+  hltdc.Init.Backcolor.Blue = 255;
   hltdc.Init.Backcolor.Green = 0;
   hltdc.Init.Backcolor.Red = 0;
   if (HAL_LTDC_Init(&hltdc) != HAL_OK)
@@ -883,18 +881,18 @@ static void MX_LTDC_Init(void)
     Error_Handler();
   }
   pLayerCfg.WindowX0 = 0;
-  pLayerCfg.WindowX1 = 480;
-  pLayerCfg.WindowY0 = 1;
-  pLayerCfg.WindowY1 = 481;
+  pLayerCfg.WindowX1 = 800;
+  pLayerCfg.WindowY0 = 0;
+  pLayerCfg.WindowY1 = 480;
   pLayerCfg.PixelFormat = LTDC_PIXEL_FORMAT_RGB888;
   pLayerCfg.Alpha = 255;
-  pLayerCfg.Alpha0 = 0;
+  pLayerCfg.Alpha0 = 255;
   pLayerCfg.BlendingFactor1 = LTDC_BLENDING_FACTOR1_PAxCA;
   pLayerCfg.BlendingFactor2 = LTDC_BLENDING_FACTOR2_PAxCA;
   pLayerCfg.FBStartAdress = 0x0;
   pLayerCfg.ImageWidth = 480;
   pLayerCfg.ImageHeight = 480;
-  pLayerCfg.Backcolor.Blue = 0;
+  pLayerCfg.Backcolor.Blue = 255;
   pLayerCfg.Backcolor.Green = 0;
   pLayerCfg.Backcolor.Red = 0;
   if (HAL_LTDC_ConfigLayer(&hltdc, &pLayerCfg, 0) != HAL_OK)
@@ -1072,15 +1070,13 @@ static void MX_LTDC_Init(void)
   HAL_Delay(120);
 #endif
 
-  //  HAL_DSI_EnterULPM(&hdsi);
-  //  HAL_Delay(10);
-  //
-  //  LCD_Init();
-  //  HAL_DSI_ExitULPM(&hdsi);
-  //  HAL_Delay(10);
-  /* USER CODE END LTDC_Init 2 */
-//
+//    HAL_DSI_EnterULPM(&hdsi);
+//    HAL_Delay(10);
 
+    LCD_Init();
+//    HAL_DSI_ExitULPM(&hdsi);
+//    HAL_Delay(10);
+  /* USER CODE END LTDC_Init 2 */
 
 }
 

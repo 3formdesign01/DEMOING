@@ -40,7 +40,7 @@ static STM32DMA dma;
 static LCDGPU2D display;
 static ApplicationFontProvider fontProvider;
 static Texts texts;
-static TouchGFXHAL hal(dma, display, tc, 480, 480);
+static TouchGFXHAL hal(dma, display, tc, 800, 480);
 
 void touchgfx_init()
 {
@@ -67,7 +67,7 @@ void touchgfx_init()
 void touchgfx_components_init()
 {
     nema_init();
-    nema_vg_init_stencil_pool(480, 480, 1);
+    nema_vg_init_stencil_pool(800, 480, 1);
 }
 
 void touchgfx_taskEntry()
